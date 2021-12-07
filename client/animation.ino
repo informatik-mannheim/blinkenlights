@@ -85,9 +85,9 @@ void play_animation(animation *animation) {
         ulong time = get_time();
         animation_element e = animation->elements[i];
 
-        if (e.command < animations->num_animations) {
+        if (e.command < animations->num_callbacks) {
             // Call the animation function
-            animations->callback[e.command]();
+            animations->callbacks[e.command]();
         }
 
         while (time_sum + e.duration > get_time()) {

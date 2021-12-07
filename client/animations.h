@@ -15,11 +15,11 @@ typedef void (*animation_function)();
 
 /** Animations stored */
 typedef struct {
-    /** Number of animations */
-    uint num_animations;
+    /** Number of callback functions for animations */
+    uint num_callbacks;
 
     /* functions to be called */
-    animation_function *callback;
+    animation_function *callbacks;
 } animation_functions;
 
 /** 

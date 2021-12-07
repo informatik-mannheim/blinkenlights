@@ -15,14 +15,14 @@
 void setup_animations() {
     animation_functions *functions = (animation_functions*) malloc(sizeof(animation_functions));
 
-    functions->num_animations = NUM_ANIMATION_FUNCTIONS;
+    functions->num_callbacks = NUM_ANIMATION_FUNCTIONS;
 
-    functions->callback = (animation_function*) calloc(functions->num_animations, sizeof(animation_function));
+    functions->callbacks = (animation_function*) calloc(functions->num_callbacks, sizeof(animation_function));
 
     int i = 0;
 
-    functions->callback[i++] = led_on;
-    functions->callback[i++] = led_off;
+    functions->callbacks[i++] = led_on;
+    functions->callbacks[i++] = led_off;
 
     // add your functions here
 
