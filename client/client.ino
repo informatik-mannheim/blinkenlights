@@ -1,6 +1,6 @@
 /**
  * Blinkenlights client.
- * 
+ *
  * (c) 2021 Thomas Smits
  */
 
@@ -13,6 +13,7 @@
 #include "time.h"
 #include "animation.h"
 #include "animations.h"
+#include "hardware.h"
 
 /** Throttle the loop to an invocation every X milliseconds */
 #define INTERVAL 10
@@ -23,6 +24,7 @@ void setup() {
     setup_animation();
     setup_network();
     setup_animations();
+    setup_hardware();
 }
 
 ulong loop_count = 0;   // wraparound intended

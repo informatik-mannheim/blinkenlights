@@ -1,6 +1,6 @@
 /*
  * Network functions.
- * 
+ *
  * (c) 2021 Thomas Smits
  */
 #include "WiFi.h"
@@ -14,7 +14,7 @@
 void setup_network() {
     // Connect to the Wireless network
     WiFi.mode(WIFI_STA);
-    WiFi.begin(WLAN_SSID, PASSWORD);
+    WiFi.begin(WLAN_SSID, WLAN_PASSWORD);
 
     int status;
 
