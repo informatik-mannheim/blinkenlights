@@ -4,40 +4,49 @@ require 'socket'
 TIME_PORT = 2000
 ANIMATION_PORT = 2001
 
-ON = 0
-OFF = 1
+BLACK = 0
+ON = 1
+OFF = 2
+KNIGHT_RIDER = 3
+PRIDE = 4
 
-animation = {
-    start: 10000,
-    cycle_pause: 10000,
-    repeat: 10,
-    elements: [
-        { duration: 500,
-          command: ON,
-        },
-        { duration: 500,
-          command: OFF,
-        },
-        { duration: 1000,
-          command: ON,
-        },
-        { duration: 1000,
-          command: OFF,
-        },
-        { duration: 1000,
-          command: ON,
-        },
-        { duration: 1000,
-          command: OFF,
-        },
-        { duration: 500,
-          command: ON,
-        },
-        { duration: 500,
-          command: OFF,
-        },
-    ],
-}
+class Animation
+  attr_reader :start, :cycle_pause, :repeat, :steps
+
+  def initialize(start, cycle_pause, repeat)
+    @start = start
+    @cycle_pause = cycle_pause
+    @repeat = repeat
+    @steps = []
+  end
+
+  def <<(step)
+    @steps << step
+  end
+
+end
+
+class Command
+
+  attr_reader :duration, :command, :command_param
+
+  def initialize(duration, command, command_param = 0)
+    @duration = duration
+    @command = command
+    @command_param = command_param
+  end
+end
+
+
+animation = Animation.new(
+  10000, 0, 30
+)
+
+#animation << Command.new(0, KNIGHT_RIDER)
+animation << Command.new(50, KNIGHT_RIDER, 0)
+animation << Command.new(50, KNIGHT_RIDER, 1)
+animation << Command.new(0, BLACK)
+
 
 def t_stamp()
   t = Time.now
@@ -59,6 +68,8 @@ t1 = Thread.new do
         client.write t_stamp
         client.write "\n"
         client.close
+
+        puts "Send timestamp to client"
     end
 end
 
@@ -70,20 +81,33 @@ t2 = Thread.new do
     loop do
         client = server.accept
 
-        client.write animation[:start] + xxx
+        id = client.recv(2)
+        client.close_read
+
+        puts "Request received. Client id=#{id}"
+
+        client.write animation.start + xxx
+        puts animation.start + xxx
         client.write "\n"
-        client.write animation[:cycle_pause]
+        client.write animation.cycle_pause
+        puts animation.cycle_pause
         client.write "\n"
-        client.write animation[:repeat]
+        client.write animation.repeat
+        puts animation.repeat
         client.write "\n"
-        client.write animation[:elements].size
+        client.write animation.steps.size
+        puts animation.steps.size
         client.write "\n"
 
-
-        animation[:elements].each do |e|
-          client.write e[:duration]
+        animation.steps.each do |e|
+          client.write e.duration
+          puts e.duration
           client.write "\n"
-          client.write e[:command]
+          client.write e.command
+          puts e.command
+          client.write "\n"
+          client.write e.command_param
+          puts e.command_param
           client.write "\n"
         end
 

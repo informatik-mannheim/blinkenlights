@@ -15,6 +15,12 @@
 /* Pin the neopixel stripe is attached to */
 #define DATA_PIN 4
 
+/* Type of LED stripe */
+#define LED_TYPE    WS2811
+
+/* Order of the colors in the data */
+#define COLOR_ORDER GRB
+
 /**
  * Initialize the hardware.
  */
@@ -27,7 +33,7 @@ void setup_hardware() {
     pinMode(DIP3_PIN, INPUT_PULLDOWN);
 
     // Initialize FastLED lib
-    FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 }
 
 /**

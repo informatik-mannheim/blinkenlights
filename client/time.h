@@ -58,4 +58,9 @@ bool time_compare(ulong val1, ulong val2);
  */
 ulong get_time();
 
+/**
+ * Set up the time management.
+ */
+void setup_time();
+
 #endif

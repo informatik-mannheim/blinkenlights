@@ -1,6 +1,6 @@
 /**
  * Collection of different animations.
- * 
+ *
  * (c) 2021 Thomas Smits
  */
 
@@ -9,9 +9,10 @@
 
 #include "config.h"
 #include "types.h"
+#include "hardware.h"
 
 /** Function pointer for the animation  */
-typedef void (*animation_function)();
+typedef void (*animation_function)(uint, uint);
 
 /** Animations stored */
 typedef struct {
@@ -22,7 +23,7 @@ typedef struct {
     animation_function *callbacks;
 } animation_functions;
 
-/** 
+/**
  *  Pointer to all available animations. Will be initialized
  *  by the setup_animations function.
  */

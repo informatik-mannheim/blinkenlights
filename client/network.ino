@@ -42,7 +42,7 @@ ulong get_server_time() {
         return 0;
     }
 
-    String line = client.readStringUntil('\r');
+    String line = client.readStringUntil('\n');
     ulong timestamp = line.toInt();
 
     client.stop();

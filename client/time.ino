@@ -1,6 +1,6 @@
 /*
  * Time management functions.
- * 
+ *
  * (c) 2021 Thomas Smits
  */
 
@@ -41,24 +41,24 @@ void time_to_millis(ushort hour, ushort minute, ushort second, ushort msec, ulon
 */
 void millis_to_time(ulong timestamp, ushort* hour, ushort* minute, ushort* second, ushort* msec) {
 
-  // handle wraparound of day
-  while (timestamp > MILLIS_PER_DAY) {
-    timestamp -= MILLIS_PER_DAY;
-  }
+    // handle wraparound of day
+    while (timestamp > MILLIS_PER_DAY) {
+        timestamp -= MILLIS_PER_DAY;
+    }
 
-  *hour = timestamp / MILLIS_PER_HOUR;
+    *hour = timestamp / MILLIS_PER_HOUR;
 
-  // remove hour part from timestamp
-  timestamp -= *hour * MILLIS_PER_HOUR;
+    // remove hour part from timestamp
+    timestamp -= *hour * MILLIS_PER_HOUR;
 
-  *minute = timestamp / MILLIS_PER_MINUTE;
+    *minute = timestamp / MILLIS_PER_MINUTE;
 
-  // remove minute part from timestamp
-  timestamp -= *minute * MILLIS_PER_MINUTE;
+    // remove minute part from timestamp
+    timestamp -= *minute * MILLIS_PER_MINUTE;
 
-  *second = timestamp / MILLIS_PER_SECOND;
+    *second = timestamp / MILLIS_PER_SECOND;
 
-  *msec = timestamp % MILLIS_PER_SECOND;
+    *msec = timestamp % MILLIS_PER_SECOND;
 }
 
 /**
@@ -70,14 +70,14 @@ void millis_to_time(ulong timestamp, ushort* hour, ushort* minute, ushort* secon
   @param minute (int, out) minute
 */
 void time_wrap(ushort* hour, ushort* minute) {
-  while (*minute >= 60) {
-    *minute -= 60;
-    *hour++;
-  }
+    while (*minute >= 60) {
+        *minute -= 60;
+        *hour++;
+    }
 
-  while (*hour >= 24) {
-    *hour -= 24;
-  }
+    while (*hour >= 24) {
+        *hour -= 24;
+    }
 }
 
 /**
@@ -120,7 +120,7 @@ ulong get_time() {
     return timestamp;
 }
 
-#define EPSILON 20
+#define EPSILON 100
 
 /**
  * Check, if the val1 lies within a epsilon environment around val2.
@@ -132,4 +132,13 @@ ulong get_time() {
  */
 bool time_compare(ulong val1, ulong val2) {
     return ((val2 - 2*EPSILON < val1) && (val1 < val2 + 2*EPSILON));
+}
+
+
+/**
+ * Set up the time management.
+ */
+void setup_time() {
+    // call get_time once to retrieve the server time
+    get_time();
 }

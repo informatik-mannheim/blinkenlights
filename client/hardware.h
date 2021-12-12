@@ -10,7 +10,8 @@
 #define hardware_h
 
 /* Number of LEDs attached to DATA_PIN */
-#define NUM_LEDS 16
+#define NUM_LEDS 100
+
 
 /* LEDs data structure */
 CRGB leds[NUM_LEDS];
