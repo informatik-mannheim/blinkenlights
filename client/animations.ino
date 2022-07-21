@@ -187,19 +187,29 @@ void black(uint id, uint param) {
     FastLED.show();
 }
 
-#define COLOR_WHEEL_DELAY 1000
+#define COLOR_WHEEL_DELAY 10
 
 void color_wheel(uint id, uint param) {
     static int current_color = 0;
 
     tracenl("Playing color_wheel");
 
-    int s = 50;
-    int v = 50;
+    int s = 90;
+    int v = 90;
     
     for (int h = 0; h < 360; h++) {
+      CRGB newcolor = CHSV(h, s, v);
        for ( uint16_t i = 0 ; i < NUM_LEDS; i++) {
-          CRGB newcolor = CHSV(h, s, v);
+          
+          leds[i] = newcolor;          
+       }       
+       FastLED.show();
+       FastLED.delay(COLOR_WHEEL_DELAY);
+    }
+    for (int h = 360; h < 0; h--) {
+      CRGB newcolor = CHSV(h, s, v);
+       for ( uint16_t i = 0 ; i < NUM_LEDS; i++) {
+          
           leds[i] = newcolor;          
        }       
        FastLED.show();
