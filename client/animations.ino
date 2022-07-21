@@ -8,7 +8,59 @@
 #include "animations.h"
 #include "hardware.h"
 
-#define NUM_ANIMATION_FUNCTIONS 5
+#define NUM_ANIMATION_FUNCTIONS 6
+
+static void hsv_to_rgb(int H, int S, int V, int *r_out, int *g_out, int *b_out) {
+    
+    if (H > 360 || H < 0 || S > 100 || S < 0 || V > 100 || V < 0) {
+        *r_out = *g_out = *b_out = 0;
+        return;
+    }
+    
+    float s = S / 100.0;
+    float v = V / 100.0;
+    float C = s * v;
+    float X = C * ( 1.0 - abs(fmod(H / 60.0, 2.0) - 1.0));
+    float m = v - C;
+
+    float r, g, b;
+    
+    if (H >= 0 && H < 60){
+        r = C;
+        g = X;
+        b = 0;
+    }
+    else if (H >= 60 && H < 120) {
+        r = X;
+        g = C;
+        b = 0;
+    }
+    else if (H >= 120 && H < 180) {
+        r = 0;
+        g = C;
+        b = X;
+    }
+    else if (H >= 180 && H < 240) {
+        r = 0;
+        g = X;
+        b = C;
+    }
+    else if (H >= 240 && H < 300) {
+        r = X;
+        g = 0;
+        b = C;
+    }
+    else{
+        r = C;
+        g = 0;
+        b = X;
+    }
+    
+    *r_out = (r + m) * 255;
+    *g_out = (g + m) * 255;
+    *b_out = (b + m) * 255;
+}
+
 
 /**
  * Initialize the animations available.
@@ -27,6 +79,7 @@ void setup_animations() {
     functions->callbacks[i++] = led_off;
     functions->callbacks[i++] = knight_rider;
     functions->callbacks[i++] = pride;
+    functions->callbacks[i++] = color_wheel;
 
     // add your functions here
 
@@ -57,16 +110,16 @@ void knight_rider(uint it, uint param) {
        for (int i = NUM_LEDS - 1; i >= 0; i--) {
             leds[i] = CRGB::Red;
             FastLED.show();
-            FastLED.delay(STEP_PAUSE);
-            leds[i] = CRGB::Black;
+            //FastLED.delay(STEP_PAUSE);
+            //leds[i] = CRGB::Black;
       }
     }
     else {
         for (int i = 0; i < NUM_LEDS; i++) {
             leds[i] = CRGB::Red;
             FastLED.show();
-            FastLED.delay(STEP_PAUSE);
-            leds[i] = CRGB::Black;
+            //FastLED.delay(STEP_PAUSE);
+            //leds[i] = CRGB::Black;
         }
     }
 }
@@ -132,4 +185,24 @@ void black(uint id, uint param) {
     }
 
     FastLED.show();
+}
+
+#define COLOR_WHEEL_DELAY 1000
+
+void color_wheel(uint id, uint param) {
+    static int current_color = 0;
+
+    tracenl("Playing color_wheel");
+
+    int s = 50;
+    int v = 50;
+    
+    for (int h = 0; h < 360; h++) {
+       for ( uint16_t i = 0 ; i < NUM_LEDS; i++) {
+          CRGB newcolor = CHSV(h, s, v);
+          leds[i] = newcolor;          
+       }       
+       FastLED.show();
+       FastLED.delay(COLOR_WHEEL_DELAY);
+    }
 }
